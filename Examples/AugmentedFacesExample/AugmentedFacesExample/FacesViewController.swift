@@ -120,7 +120,7 @@ public final class FacesViewController: UIViewController {
   /// Setup a camera capture session from the front camera to receive captures.
   private func setupCamera() {
     guard let device =
-      AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
+      AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
       let input = try? AVCaptureDeviceInput(device: device)
     else {
       fatalError("Failed to create capture device from front camera.")
@@ -216,7 +216,7 @@ extension FacesViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
 
     // Use the device's gravity vector to determine which direction is up for a face. This is the
     // positive counter-clockwise rotation of the device relative to landscape left orientation.
-    let rotation =  2 * .pi - atan2(deviceMotion.gravity.x, deviceMotion.gravity.y) + .pi / 2
+    let rotation =  2 * .pi + atan2(deviceMotion.gravity.x, deviceMotion.gravity.y) + .pi / 2
     let rotationDegrees = (UInt)(rotation * 180 / .pi) % 360
 
     faceSession?.update(
@@ -247,7 +247,7 @@ extension FacesViewController : GARAugmentedFaceSessionDelegate {
         zNear: kCameraZNear,
         zFar: kCameraZFar)
     )
-    sceneView.layer.transform = CATransform3DMakeScale(-1, 1, 1)
+//    sceneView.layer.transform = CATransform3DMakeScale(-1, 1, 1)
 
     nextFaceFrame = frame
   }
@@ -293,7 +293,7 @@ extension FacesViewController : SCNSceneRendererDelegate {
       frame.displayTransform(
         forViewportSize: cameraImageLayer.bounds.size,
         presentationOrientation: .portrait,
-        mirrored: true)
+        mirrored: false)
     )
     CATransaction.commit()
   }
