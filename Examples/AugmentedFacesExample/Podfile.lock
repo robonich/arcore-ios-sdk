@@ -1,0 +1,35 @@
+PODS:
+  - ARCore/AugmentedFaces (1.12.0):
+    - ARCore/Base (~> 1.12)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.2)
+    - Protobuf (~> 3.5)
+  - ARCore/Base (1.12.0)
+  - GoogleToolboxForMac/Defines (2.2.1)
+  - GoogleToolboxForMac/Logger (2.2.1):
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+  - "GoogleToolboxForMac/NSData+zlib (2.2.1)":
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+  - GTMSessionFetcher/Core (1.2.2)
+  - Protobuf (3.9.2)
+
+DEPENDENCIES:
+  - ARCore/AugmentedFaces (~> 1.12.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - ARCore
+    - GoogleToolboxForMac
+    - GTMSessionFetcher
+    - Protobuf
+
+SPEC CHECKSUMS:
+  ARCore: 33ee7ed8c1571d840d49cda8fad52efc611f742b
+  GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
+  GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
+  Protobuf: 67fb42ba613def994e61854de2b3164f13790cc4
+
+PODFILE CHECKSUM: 4bfa2cc83b9e237ce1a274b829c68b33a45b70d7
+
+COCOAPODS: 1.7.5

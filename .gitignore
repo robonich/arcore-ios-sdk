@@ -17,3 +17,6 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 .DS_Store
+
+#CocoaPod
+Pods/
