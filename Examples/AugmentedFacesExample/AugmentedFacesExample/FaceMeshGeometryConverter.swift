@@ -152,17 +152,27 @@ final public class FaceMeshGeometryConverter {
         bytesPerIndex: idxSize)
       reallocateGeometry = true
     }
+    
+    let newVertices = UnsafeMutablePointer<simd_float3>.allocate(capacity: vertexCount)
+    newVertices.initialize(from: face.mesh.vertices, count: vertexCount)
+    
+    newVertices[10] = SIMD3<Float>.init(face.mesh.vertices[10].x, 0.1, face.mesh.vertices[10].z)
 
     // Copy the face mesh data into the appropriate buffers.
     if let vertexBuffer = faceMesh.mtlVertexBuffer,
       let textureBuffer = faceMesh.mtlTexBuffer,
       let normalBuffer = faceMesh.mtlNormalBuffer,
       let indexBuffer = faceMesh.indexBuffer {
-      memcpy(vertexBuffer.contents(), face.mesh.vertices, vertBufSize)
+//      memcpy(vertexBuffer.contents(), face.mesh.vertices, vertBufSize)
+      memcpy(vertexBuffer.contents(), newVertices, vertBufSize)
       memcpy(textureBuffer.contents(), face.mesh.textureCoordinates, texBufSize)
       memcpy(normalBuffer.contents(), face.mesh.normals, normalBufSize)
       memcpy(indexBuffer.mutableBytes, face.mesh.triangleIndices, idxBufSize)
     }
+    
+    print(face.mesh.vertices[10])
+    print(newVertices[10])
+    print(face.mesh.textureCoordinates[10])
 
     // If any of the sources or element changed, reallocate the geometry.
     if reallocateGeometry {

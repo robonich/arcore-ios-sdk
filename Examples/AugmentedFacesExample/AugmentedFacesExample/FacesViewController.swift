@@ -31,6 +31,9 @@ public final class FacesViewController: UIViewController {
   private var captureDevice: AVCaptureDevice?
   private var captureSession: AVCaptureSession?
   private lazy var cameraImageLayer = CALayer()
+  private let faceVertexIdList = [
+      20, 425, 352, 131, 211, 212, 330, 213, 167, 948, 130, 946, 466, 472, 940, 464, 938, 468, 936, 928, 934, 926, 932, 924 ,920, 922, 918, 998, 916, 996, 914, 1048, 994, 912, 910, 908, 907, 906, 822, 1216, 1215, 1214, 1001, 1005, 1000, 807, 966, 888,   942, 579, 616, 661, 765, 660, 659, 580, 783, 853
+  ]
 
   // MARK: - Scene properties
 
@@ -81,7 +84,7 @@ public final class FacesViewController: UIViewController {
   /// canonical face mesh asset.
   /// https://developers.google.com/ar/develop/developer-guides/creating-assets-for-augmented-faces
   private func setupScene() {
-    guard let faceImage = UIImage(named: "Face.scnassets/face_texture.png"),
+    guard let faceImage = UIImage(named: "Face.scnassets/koko_face.png"),
       let scene = SCNScene(named: "Face.scnassets/fox_face.scn"),
       let modelRoot = scene.rootNode.childNode(withName: "asset", recursively: false)
     else {
@@ -268,6 +271,30 @@ extension FacesViewController : SCNSceneRendererDelegate {
       faceTextureNode.geometry?.firstMaterial = faceTextureMaterial
       faceOccluderNode.geometry = faceTextureNode.geometry?.copy() as? SCNGeometry
       faceOccluderNode.geometry?.firstMaterial = faceOccluderMaterial
+        
+      let faceOutlines = faceVertexIdList.map { face.mesh.vertices[$0] }
+      let modelMatrix = faceTextureNode.transform
+      
+      let size = sceneView.currentViewport
+      guard let camera = sceneView.session.currentFrame.camera else { return }
+      sceneView.trans
+      
+      let textureCoordinates = faceOutlines.map { vertex -> CGPoint in
+        let vertex4 = vector_float4(vertex.x, vertex.y, vertex.z, 1)
+        let world_vertex4 = simd_mul(modelMatrix, vertex4)
+        let world_vector3 = simd_float3(x: world_vertex4.x / world_vertex4.w, y: world_vertex4.y / world_vertex4.w, z: world_vertex4.z / world_vertex4.w)
+        let pt = camera.projectPoint(world_vector3,
+                      orientation: .portrait,
+                      viewportSize: sceneView.currentViewport)
+        camera.projectPo
+                  let v = 1.0 - Float(pt.x) / Float(size.height)
+                  let u = Float(pt.y) / Float(size.width)
+
+      //            let vectorFloat = vector_float2(u, v)
+
+                  return CGPoint(x: CGFloat(u) * self.sceneView.bounds.width, y: CGFloat(v) * self.sceneView.bounds.height)
+
+              }
 
       faceNode.simdWorldTransform = face.centerTransform
       updateTransform(face.transform(for: .nose), for: noseTipNode)
